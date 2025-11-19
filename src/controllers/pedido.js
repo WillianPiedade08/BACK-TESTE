@@ -1,137 +1,69 @@
-// controllers/pedido.js
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-// Criar novo pedido
-exports.criarPedido = async (req, res) => {
-  try {
-    const { itens } = req.body;
+const create = async (req, res) => {
+    try {
+        const { sub_total, data, usuario_id } = req.body;
 
-    const usuarioId = req.user?.id || req.usuario?.id;
-    if (!usuarioId) {
-      return res.status(401).json({ erro: "Usuário não autenticado." });
-    }
-
-    if (!Array.isArray(itens) || itens.length === 0) {
-      return res.status(400).json({ erro: "Carrinho vazio ou inválido." });
-    }
-
-    // Validação dos itens
-    const itensValidados = itens.map(it => ({
-      produtoId: Number(it.produtoId ?? it.id),
-      quantidade: Number(it.quantidade ?? it.qtd ?? 0),
-    }));
-
-    for (const it of itensValidados) {
-      if (!it.produtoId || it.quantidade <= 0) {
-        return res.status(400).json({ erro: "Cada item precisa de produtoId e quantidade > 0." });
-      }
-    }
-
-    // Verifica se os produtos existem
-    const ids = itensValidados.map(i => i.produtoId);
-    const produtosExistentes = await prisma.produto.findMany({
-      where: { id: { in: ids } },
-      select: { id: true }
-    });
-
-    const idsEncontrados = produtosExistentes.map(p => p.id);
-    const faltantes = ids.filter(id => !idsEncontrados.includes(id));
-    if (faltantes.length > 0) {
-      return res.status(400).json({ erro: `Produtos não encontrados: ${faltantes.join(", ")}` });
-    }
-
-    // Criar pedido com itens
-    const pedido = await prisma.pedido.create({
-      data: {
-        usuarioId,
-        status: "PENDENTE",
-        itens: {
-          create: itensValidados
+        if (!usuario_id) {
+            return res.status(400).json({ error: "usuario_id é obrigatório" });
         }
-      },
-      include: {
-        usuario: true,
-        itens: {
-          include: { produto: true } // ✅ Agora isso vai funcionar
+
+        const pedido = await prisma.pedido.create({
+            data: {
+                sub_total: Number(sub_total),
+                data: data ? new Date(data) : new Date(),
+                usuario: {
+                    connect: { id: Number(usuario_id) }
+                }
+            },
+            include: {
+                usuario: true,
+                itens: true
+            }
+        });
+
+        return res.status(201).json(pedido);
+    } catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
+};
+
+const read = async (req, res) => {
+    const pedidos = await prisma.pedido.findMany({
+        include: {
+            usuario: true,
+            itens: {
+                include: {
+                    produto: true
+                }
+            }
         }
-      }
     });
-
-    return res.status(201).json(pedido);
-  } catch (error) {
-    console.error("❌ Erro ao criar pedido:", error);
-    return res.status(500).json({
-      erro: "Erro ao criar pedido",
-      detalhes: error.message ?? String(error),
-    });
-  }
+    res.json(pedidos);
 };
 
-// Listar todos os pedidos (GERENTE)
-exports.listarTodos = async (req, res) => {
-  try {
-    const pedidos = await prisma.pedido.findMany({
-      include: {
-        usuario: true,
-        itens: { include: { produto: true } }
-      },
-      orderBy: { createdAt: 'desc' }
-    });
-    return res.json(pedidos);
-  } catch (error) {
-    console.error("Erro ao listar pedidos:", error);
-    return res.status(500).json({ erro: "Erro ao listar pedidos" });
-  }
+const update = async (req, res) => {
+    try {
+        const pedido = await prisma.pedido.update({
+            where: { pedido_id: Number(req.params.id) },
+            data: req.body,
+        });
+        return res.status(202).json(pedido);
+    } catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
 };
 
-// Listar pedidos do usuário logado
-exports.listarPorUsuario = async (req, res) => {
-  try {
-    const usuarioId = req.user?.id;
-    if (!usuarioId) return res.status(401).json({ erro: "Usuário não autenticado." });
-
-    const pedidos = await prisma.pedido.findMany({
-      where: { usuarioId },
-      include: {
-        itens: { include: { produto: true } }
-      },
-      orderBy: { createdAt: 'desc' }
-    });
-
-    return res.json(pedidos);
-  } catch (error) {
-    console.error("Erro ao listar meus pedidos:", error);
-    return res.status(500).json({ erro: "Erro ao listar meus pedidos" });
-  }
+const remove = async (req, res) => {
+    try {
+        await prisma.pedido.delete({
+            where: { pedido_id: Number(req.params.id) }
+        });
+        return res.status(204).send();
+    } catch (error) {
+        return res.status(404).json({ error: error.message });
+    }
 };
 
-// Atualizar status do pedido (GERENTE)
-exports.update = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-
-    const pedido = await prisma.pedido.update({
-      where: { id: Number(id) },
-      data: { status },
-    });
-
-    return res.json(pedido);
-  } catch (error) {
-    console.error("Erro ao atualizar pedido:", error);
-    return res.status(500).json({ erro: "Erro ao atualizar pedido" });
-  }
-};
-
-// Remover pedido (GERENTE)
-exports.remove = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await prisma.pedido.delete({ where: { id: Number(id) } });
-    return res.json({ mensagem: "Pedido removido com sucesso!" });
-  } catch (error) {
-    console.error("Erro ao remover pedido:", error);
-    return res.status(500).json({ erro: "Erro ao remover pedido" });
-  }
-};
+module.exports = { create, read, update, remove };

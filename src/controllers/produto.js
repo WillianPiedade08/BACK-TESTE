@@ -4,11 +4,11 @@ const prisma = new PrismaClient();
 
 /**
  * Criar produto (GERENTE)
- * Body esperado: { nome, descricao, preco, quantidade, imagem, marca }
+ * Body esperado: { nome, descricao, preco, quantidade, imagem }
  */
 exports.create = async (req, res) => {
   try {
-    const { nome, descricao = '', preco, quantidade = 0, imagem = '', marca = 'SemMarca' } = req.body;
+    const { nome, descricao = '', preco, quantidade = 0, imagem = '' } = req.body;
 
     if (!nome || preco === undefined) {
       return res.status(400).json({ erro: 'Campos obrigatórios: nome e preco' });
@@ -27,8 +27,7 @@ exports.create = async (req, res) => {
         descricao,
         preco: precoNum,
         quantidade: quantidadeNum,
-        imagem,
-        marca,
+        imagem
       },
     });
 
@@ -43,25 +42,11 @@ exports.create = async (req, res) => {
   }
 };
 
-/**
- * Listar produtos (com suporte a filtro por marca via query)
- * Ex: GET /produtos?marca=Magnus
- */
 exports.listar = async (req, res) => {
   try {
-    const { marca } = req.query;
+    const produtos = await prisma.produto.findMany();
 
-    const where = marca
-      ? {
-          where: {
-            marca: { equals: marca, mode: 'insensitive' }
-          }
-        }
-      : {};
-
-    const produtos = await prisma.produto.findMany(where);
-
-    // ✅ Converte preco para Number antes de retornar
+    // Converte preco para Number antes de retornar
     const produtosConvertidos = produtos.map(p => ({
       ...p,
       preco: Number(p.preco)
@@ -70,19 +55,23 @@ exports.listar = async (req, res) => {
     return res.status(200).json(produtosConvertidos);
   } catch (error) {
     console.error('❌ Erro ao buscar produtos:', error);
-    return res.status(500).json({ erro: 'Erro ao buscar produtos.', detalhes: error.message });
+    return res.status(500).json({
+      erro: 'Erro ao buscar produtos.',
+      detalhes: error.message
+    });
   }
 };
+
 
 /**
  * Atualizar produto (GERENTE)
  * Params: id
- * Body: campos a atualizar { nome, descricao, preco, quantidade, imagem, marca }
+ * Body: campos a atualizar { nome, descricao, preco, quantidade, imagem }
  */
 exports.update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nome, descricao, preco, quantidade, imagem, marca } = req.body;
+    const { nome, descricao, preco, quantidade, imagem } = req.body;
 
     const dadosAtualizar = {};
 
@@ -99,7 +88,6 @@ exports.update = async (req, res) => {
       dadosAtualizar.quantidade = quantidadeNum;
     }
     if (imagem !== undefined) dadosAtualizar.imagem = imagem;
-    if (marca !== undefined) dadosAtualizar.marca = marca;
 
     const produtoAtualizado = await prisma.produto.update({
       where: { id: Number(id) },

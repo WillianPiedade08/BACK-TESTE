@@ -32,11 +32,10 @@ rota.put("/produtos/:id", autenticarJWT, verificargerente, ensureFunction(produt
 rota.delete("/produtos/:id", autenticarJWT, verificargerente, ensureFunction(produto.remove, "produto.remove"));
 
 // ROTAS DE PEDIDO
-rota.post("/pedidos", autenticarJWT, ensureFunction(pedido.criarPedido, "pedido.criarPedido"));
-rota.get("/pedidos", autenticarJWT, verificargerente, ensureFunction(pedido.listarTodos, "pedido.listarTodos"));
-rota.get("/meus-pedidos", autenticarJWT, ensureFunction(pedido.listarPorUsuario, "pedido.listarPorUsuario"));
-rota.put("/pedidos/:id", autenticarJWT, verificargerente, ensureFunction(pedido.update, "pedido.update"));
-rota.delete("/pedidos/:id", autenticarJWT, verificargerente, ensureFunction(pedido.remove, "pedido.remove"));
+rota.get('/pedidos', pedido.read);
+rota.post('/pedidos', pedido.create);
+rota.put('/pedidos/:id', pedido.update);
+rota.delete('/pedidos/:id', pedido.remove);
 
 //  ROTA DE PAGAMENTO
 rota.post("/pagamentos", autenticarJWT, ensureFunction(pagamento.criarPagamento, "pagamento.criarPagamento"));

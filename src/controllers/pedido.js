@@ -68,7 +68,7 @@ exports.criarPedido = async (req, res) => {
   }
 };
 
-// Listar todos os pedidos (ADMIN)
+// Listar todos os pedidos (GERENTE)
 exports.listarTodos = async (req, res) => {
   try {
     const pedidos = await prisma.pedido.findMany({
@@ -106,7 +106,7 @@ exports.listarPorUsuario = async (req, res) => {
   }
 };
 
-// Atualizar status do pedido (ADMIN)
+// Atualizar status do pedido (GERENTE)
 exports.update = async (req, res) => {
   try {
     const { id } = req.params;
@@ -124,7 +124,7 @@ exports.update = async (req, res) => {
   }
 };
 
-// Remover pedido (ADMIN)
+// Remover pedido (GERENTE)
 exports.remove = async (req, res) => {
   try {
     const { id } = req.params;

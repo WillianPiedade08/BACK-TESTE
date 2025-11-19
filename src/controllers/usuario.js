@@ -9,11 +9,11 @@ const SECRET_RECUPERACAO = process.env.JWT_SECRET_RECUPERACAO || 'recuperar_senh
 // Configuração do SendGrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// Listar todos os usuários (somente ADMIN)
+// Listar todos os usuários (somente GERENTE)
 const listar = async (req, res) => {
   try {
-    if (req.usuario.tipo !== "ADMIN") {
-      return res.status(403).json({ erro: "Acesso negado. Apenas ADMIN pode listar usuários." });
+    if (req.usuario.tipo !== "GERENTE") {
+      return res.status(403).json({ erro: "Acesso negado. Apenas GERENTE pode listar usuários." });
     }
 
     const usuarios = await prisma.usuario.findMany({
@@ -81,36 +81,6 @@ const login = async (req, res) => {
   }
 };
 
-// Solicitar recuperação de senha
-const solicitarRecuperacao = async (req, res) => {
-  const { email } = req.body;
-  try {
-    const usuario = await prisma.usuario.findUnique({ where: { email } });
-
-    if (!usuario) {
-      return res.status(200).json({ message: 'Se o email estiver cadastrado, você receberá instruções.' });
-    }
-
-    const tokenRecuperacao = jwt.sign({ id: usuario.id }, SECRET_RECUPERACAO, { expiresIn: '15m' });
-    const link = `https://erickaguiar06.github.io/front-TCC/resetar-senha.html?token=${tokenRecuperacao}`;
-
-    const msg = {
-      to: email,
-      from: 'petshop4patas.oficial01@gmail.com', // ✅ Email verificado no SendGrid
-      subject: 'Recuperação de Senha - 4 Patas PetShop',
-      html: `<p>Você solicitou a recuperação de senha.</p>
-             <p><a href="${link}">Clique aqui para redefinir sua senha</a></p>
-             <p>Este link expira em 15 minutos.</p>`
-    };
-
-    await sgMail.send(msg);
-    res.status(200).json({ message: 'Se o email estiver cadastrado, você receberá instruções.' });
-  } catch (err) {
-    console.error("Erro ao enviar email:", err);
-    res.status(500).json({ message: 'Erro ao enviar email de recuperação.' });
-  }
-};
-
 // Resetar senha com hash
 const resetarSenha = async (req, res) => {
   const { token, novaSenha } = req.body;
@@ -136,6 +106,5 @@ module.exports = {
   listar,
   create,
   login,
-  solicitarRecuperacao,
   resetarSenha
 };

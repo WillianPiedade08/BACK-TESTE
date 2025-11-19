@@ -3,7 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 /**
- * Criar produto (ADMIN)
+ * Criar produto (GERENTE)
  * Body esperado: { nome, descricao, preco, quantidade, imagem, marca }
  */
 exports.create = async (req, res) => {
@@ -75,7 +75,7 @@ exports.listar = async (req, res) => {
 };
 
 /**
- * Atualizar produto (ADMIN)
+ * Atualizar produto (GERENTE)
  * Params: id
  * Body: campos a atualizar { nome, descricao, preco, quantidade, imagem, marca }
  */
@@ -117,7 +117,7 @@ exports.update = async (req, res) => {
 };
 
 /**
- * Remover produto (ADMIN)
+ * Remover produto (GERENTE)
  * Params: id
  */
 exports.remove = async (req, res) => {

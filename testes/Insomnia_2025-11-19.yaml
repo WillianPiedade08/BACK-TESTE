@@ -414,12 +414,12 @@ collection:
           sortKey: -1763573340002
           description: ""
         children:
-          - url: " http://localhost:5000"
+          - url: https://api-pizzas-seu-ze.vercel.app/
             name: TESTE
             meta:
               id: req_08bd2c1f3b3d45458b16b040d0f0b96b
               created: 1763573352517
-              modified: 1763573352517
+              modified: 1763577292434
               isPrivate: false
               description: ""
               sortKey: -1763495072206
@@ -443,12 +443,12 @@ collection:
               sortKey: -1763495072106
               description: ""
             children:
-              - url: http://localhost:5000/usuarios
+              - url: https://api-pizzas-seu-ze.vercel.app/usuarios
                 name: READ
                 meta:
                   id: req_926fced272734a928a54b30cb6b92651
                   created: 1763573352519
-                  modified: 1763573352519
+                  modified: 1763577306590
                   isPrivate: false
                   description: ""
                   sortKey: -1763495089046
@@ -469,12 +469,12 @@ collection:
                     send: true
                     store: true
                   rebuildPath: true
-              - url: http://localhost:5000/usuarios
+              - url: https://api-pizzas-seu-ze.vercel.app/usuarios
                 name: CREATE
                 meta:
                   id: req_c75d42cf1c0e4f9d9ef32fc39daa6059
                   created: 1763573352520
-                  modified: 1763573352520
+                  modified: 1763577311476
                   isPrivate: false
                   description: ""
                   sortKey: -1763495088946
@@ -506,12 +506,12 @@ collection:
                     send: true
                     store: true
                   rebuildPath: true
-              - url: http://localhost:5000/login
+              - url: https://api-pizzas-seu-ze.vercel.app/login
                 name: LOGIN
                 meta:
                   id: req_88f3c045288348d1a42f170ecc39be0d
                   created: 1763573352521
-                  modified: 1763573352521
+                  modified: 1763577315409
                   isPrivate: false
                   description: ""
                   sortKey: -1763495084761
@@ -547,12 +547,12 @@ collection:
               sortKey: -1763495066794.75
               description: ""
             children:
-              - url: http://localhost:5000/produtos
+              - url: https://api-pizzas-seu-ze.vercel.app/produtos
                 name: READ
                 meta:
                   id: req_89514ae66b9b4033b857fc65edfd7851
                   created: 1763573352523
-                  modified: 1763573352523
+                  modified: 1763577319776
                   isPrivate: false
                   description: ""
                   sortKey: -1763495089046
@@ -568,12 +568,12 @@ collection:
                     send: true
                     store: true
                   rebuildPath: true
-              - url: http://localhost:5000/produtos
+              - url: https://api-pizzas-seu-ze.vercel.app/produtos
                 name: CREATE
                 meta:
                   id: req_f512aebdbbaf4866bb2bbf94c10dd3de
                   created: 1763573352525
-                  modified: 1763573352525
+                  modified: 1763577329442
                   isPrivate: false
                   description: ""
                   sortKey: -1763495088946
@@ -603,12 +603,12 @@ collection:
                     send: true
                     store: true
                   rebuildPath: true
-              - url: http://localhost:5000/produtos/2
+              - url: https://api-pizzas-seu-ze.vercel.app/produtos/2
                 name: UPDATE
                 meta:
                   id: req_6474ff02b02c469aab38708a3208afb8
                   created: 1763573352526
-                  modified: 1763573352526
+                  modified: 1763577337359
                   isPrivate: false
                   description: ""
                   sortKey: -1763495080576
@@ -639,12 +639,12 @@ collection:
                     send: true
                     store: true
                   rebuildPath: true
-              - url: http://localhost:5000/produtos/2
+              - url: https://api-pizzas-seu-ze.vercel.app/produtos/2
                 name: DELETE
                 meta:
                   id: req_810df4a258404de9b5265238932582e9
                   created: 1763573352528
-                  modified: 1763573352528
+                  modified: 1763577341936
                   isPrivate: false
                   description: ""
                   sortKey: -1763495076391
@@ -676,12 +676,12 @@ collection:
               sortKey: -1763495065732.5
               description: ""
             children:
-              - url: http://localhost:5000/pedidos
+              - url: https://api-pizzas-seu-ze.vercel.app/pedidos
                 name: READ
                 meta:
                   id: req_5f96b71a0e2f460d88a2d0577b59f794
                   created: 1763573352530
-                  modified: 1763573352530
+                  modified: 1763577347463
                   isPrivate: false
                   description: ""
                   sortKey: -1763495089046
@@ -700,12 +700,12 @@ collection:
                     send: true
                     store: true
                   rebuildPath: true
-              - url: http://localhost:5000/pedidos
+              - url: https://api-pizzas-seu-ze.vercel.app/pedidos
                 name: CREATE
                 meta:
                   id: req_e2c287c21e2847fc8069b1a388aeec78
                   created: 1763573352531
-                  modified: 1763573352531
+                  modified: 1763577351775
                   isPrivate: false
                   description: ""
                   sortKey: -1763495088946
@@ -733,12 +733,12 @@ collection:
                     send: true
                     store: true
                   rebuildPath: true
-              - url: http://localhost:5000/pedidos/1
+              - url: https://api-pizzas-seu-ze.vercel.app/pedidos/1
                 name: UPDATE
                 meta:
                   id: req_8b14cc1ef193435196818b01f1b329b2
                   created: 1763573352533
-                  modified: 1763573352533
+                  modified: 1763577358969
                   isPrivate: false
                   description: ""
                   sortKey: -1763495080576
@@ -766,12 +766,12 @@ collection:
                     send: true
                     store: true
                   rebuildPath: true
-              - url: http://localhost:5000/pedidos/3
+              - url: https://api-pizzas-seu-ze.vercel.app/pedidos/3
                 name: DELETE
                 meta:
                   id: req_02c01230fb48487593afeab2e21aa9fc
                   created: 1763573352534
-                  modified: 1763573352534
+                  modified: 1763577366933
                   isPrivate: false
                   description: ""
                   sortKey: -1763495076391
